@@ -1,18 +1,19 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Iterator;
-import java.util.Stack;
 
 public class StorageNode {
 	private int maxCapacity;
-	private Stack<DbEntity> mem;
+	private Deque<DbEntity> mem;
 	
 	public StorageNode(int maxCapacity) {
 		this.maxCapacity = maxCapacity;
-		mem = new Stack<DbEntity>();
+		mem = new ArrayDeque<DbEntity>();
 	}
 	
 	public boolean addEntity(DbEntity entity) {
 		if (mem.size() == maxCapacity) return false;
-		mem.add(new DbEntity(entity));
+		mem.push(new DbEntity(entity));
 		return true;
 	}
 	
@@ -45,5 +46,15 @@ public class StorageNode {
 		return null;
 	}
 	
+	public String toString() {
+		String returnString = "{maxCapacity:" + maxCapacity + ", entities:[";
+		Iterator<DbEntity> entityIterator = mem.iterator();
+		while (entityIterator.hasNext()) {
+			returnString += entityIterator.next().toString();
+			if (entityIterator.hasNext())
+				returnString += ", ";
+		}
+		return returnString + "]}";
+	}
 	
 }

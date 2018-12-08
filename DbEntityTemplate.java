@@ -48,6 +48,10 @@ public class DbEntityTemplate {
 		return attrNames;
 	}
 	
+	public Iterator<String> getNameIterator() {
+		return attributeNames.iterator();
+	}
+	
 	/**
 	 * Fetches entity attribute types
 	 * @return ArrayList of all attribute types for entities of this type
@@ -59,6 +63,10 @@ public class DbEntityTemplate {
 			attrTypes.add(typeIterator.next());
 		}
 		return attrTypes;
+	}
+	
+	public Iterator<String> getTypeIterator() {
+		return attributeTypes.iterator();
 	}
 	
 	public String getType() {

@@ -11,6 +11,7 @@ public class Main {
 		String inFileName = argv[0];
 		String command;
 		ArrayList<DbEntityTemplate> templates = new ArrayList<DbEntityTemplate>();
+		Iterator<DbEntityTemplate> templatesIterator;
 		ArrayList<String> attrTypes;
 		ArrayList<String> attrNames;
 		ArrayList<Object> attrVals;
@@ -29,7 +30,7 @@ public class Main {
 	        Database database = new Database(words[1], Integer.parseInt(words[2]), Integer.parseInt(words[3]));
 	        
 	        line = inStream.readLine();
-	        while (line != null) {
+	        while (line != null && !line.equals("")) {
 	        	System.out.println("Reading: " + line);
 	        	if (line.isEmpty()) {
 	        		continue;
@@ -53,7 +54,7 @@ public class Main {
 	        		break;
 	        	case "INSERT":
 	        		attrVals = new ArrayList<Object>();
-	        		Iterator<DbEntityTemplate> templatesIterator = templates.iterator();
+	        		templatesIterator = templates.iterator();
 	        		DbEntityTemplate currentTemplate = null;
 	        		while (templatesIterator.hasNext()) {
 	        			currentTemplate = templatesIterator.next();
@@ -74,6 +75,65 @@ public class Main {
 	        			if (templateTypes.get(i).equals("String")) attrVals.add(words[i+2]);
 	        		}
 	        		database.add(new DbEntity(currentTemplate, attrVals));
+	        		break;
+	        	case "DELETE":
+	        		templatesIterator = templates.iterator();
+	        		currentTemplate = null;
+	        		while (templatesIterator.hasNext()) {
+	        			currentTemplate = templatesIterator.next();
+	        			if (currentTemplate.getType().equals(words[1])) {
+	        				break;
+	        			} else {
+	        				currentTemplate = null;
+	        			}
+	        		}
+	        		if (currentTemplate == null) {
+	        			System.out.println("!--No such Entity Template");
+	        			break;
+	        		}
+	        		
+	        		output.printf(database.delete(currentTemplate, words[2]));
+	        		break;
+	        	case "GET":
+	        		templatesIterator = templates.iterator();
+	        		currentTemplate = null;
+	        		while (templatesIterator.hasNext()) {
+	        			currentTemplate = templatesIterator.next();
+	        			if (currentTemplate.getType().equals(words[1])) {
+	        				break;
+	        			} else {
+	        				currentTemplate = null;
+	        			}
+	        		}
+	        		if (currentTemplate == null) {
+	        			System.out.println("!--No such Entity Template");
+	        			break;
+	        		}
+	        		
+	        		output.printf(database.get(currentTemplate, words[2]));
+	        		break;
+	        	case "UPDATE":
+	        		templatesIterator = templates.iterator();
+	        		currentTemplate = null;
+	        		while (templatesIterator.hasNext()) {
+	        			currentTemplate = templatesIterator.next();
+	        			if (currentTemplate.getType().equals(words[1])) {
+	        				break;
+	        			} else {
+	        				currentTemplate = null;
+	        			}
+	        		}
+	        		if (currentTemplate == null) {
+	        			System.out.println("!--No such Entity Template");
+	        			break;
+	        		}
+	        		attrNames = new ArrayList<String>();
+	        		ArrayList<String> attrValues = new ArrayList<String>();
+	        		for (int i = 3; i < words.length; i += 2) {
+	        			attrNames.add(words[i]);
+	        			attrValues.add(words[i + 1]);
+	        		}
+	        		database.update(currentTemplate, words[2], attrNames, attrValues);
 	        		break;
 	        	case "SNAPSHOTDB":
 	        		System.out.println(database);

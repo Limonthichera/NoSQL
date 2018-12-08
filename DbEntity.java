@@ -78,15 +78,19 @@ public class DbEntity {
 	 * @param primaryKey Key to compare to
 	 * @return true (Entity is of given type and has given primary key) or false (otherwise)
 	 */
-	public boolean equals(String entityType, Object primaryKey) {
-		if (!entityType.equals(this.entityType)) return false;
-		if (attributeTypes.get(0).equals("Integer") 
-				&& (int)(attributeValues.get(0)) == (int)primaryKey) return true;
-		if (attributeTypes.get(0).equals("Float") 
-				&& (float)(attributeValues.get(0)) == (float)primaryKey) return true;
-		if (attributeTypes.get(0).equals("String") 
-				&& ((String)(attributeValues.get(0))).equals((String)primaryKey)) return true;
-		return false;
+	public boolean equals(String entityType, String primaryKey) {
+		try {
+			if (!entityType.equals(this.entityType)) return false;
+			if (attributeTypes.get(0).equals("Integer"))
+				if ((int)(attributeValues.get(0)) == Integer.parseInt(primaryKey)) return true;
+			if (attributeTypes.get(0).equals("Float"))
+				if ((float)(attributeValues.get(0)) == Float.parseFloat(primaryKey)) return true;
+			if (attributeTypes.get(0).equals("String"))
+				if (((String)(attributeValues.get(0))).equals((String)primaryKey)) return true;
+			return false;
+		} catch (NumberFormatException e) {
+			return false;
+		}
 	}
 	
 	/**
@@ -129,12 +133,18 @@ public class DbEntity {
 		return attributeTypes.iterator();
 	}
 	
+	public Timestamp updateTimestamp() {
+		timestamp = new Timestamp(System.currentTimeMillis());
+		return timestamp;
+	}
+	
 	/**
 	 * Updates attributes with names in attrNames to new values in attrValues
 	 * @param attrNames ArrayList of names for desired updates
 	 * @param attrValues ArrayList of new values
 	 */
 	public void updateAttributes(ArrayList<String> attrNames, ArrayList<Object> attrValues) {
+		updateTimestamp();
 		Iterator<String> nameIterator = attributeNames.iterator();
 		String currentAttrName;
 		int currentIndex = 0;
@@ -143,11 +153,11 @@ public class DbEntity {
 			currentAttrName = nameIterator.next();
 			if (attrNames.contains(currentAttrName)) {
 				// Find exactly the index where current name is found, update and remove from parameter array
-				for (int i = 0; i <= attrNames.size(); i++) {
+				for (int i = 0; i < attrNames.size(); i++) {
 					if (attrNames.get(i).equals(currentAttrName)) {
 						attributeValues.set(currentIndex, attrValues.get(i));
-						attrNames.remove(i);
-						attrValues.remove(i);
+						//attrNames.remove(i);
+						//attrValues.remove(i);
 						break;
 					}
 				}

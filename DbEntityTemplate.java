@@ -48,6 +48,10 @@ public class DbEntityTemplate {
 		return attrNames;
 	}
 	
+	/**
+	 * Get an iterator through all the attribute names of this Entity Template
+	 * @return Iterator through all the attribute names of this Entity Template
+	 */
 	public Iterator<String> getNameIterator() {
 		return attributeNames.iterator();
 	}
@@ -65,18 +69,33 @@ public class DbEntityTemplate {
 		return attrTypes;
 	}
 	
+	/**
+	 * Get an iterator through all the attribute types of this Entity Template
+	 * @return Iterator through all the attribute types of this Entity Template
+	 */
 	public Iterator<String> getTypeIterator() {
 		return attributeTypes.iterator();
 	}
 	
+	/**
+	 * Gets Entity Template Type
+	 * @return Entity Template Type
+	 */
 	public String getType() {
 		return type;
 	}
 	
+	/**
+	 * Gets Entity Template Replicating Factor
+	 * @return Entity Replicating Factor
+	 */
 	public int getRF() {
 		return replicatingFactor;
 	}
 	
+	/**
+	 * @return Entity Template information in JSON format
+	 */
 	public String toString() {
 		return "{type:" + type + ", RF:" + replicatingFactor + ", attrNames:" + attributeNames + ", attrTypes:" + attributeTypes + "}";
 	}

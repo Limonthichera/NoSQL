@@ -3,12 +3,23 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 
+/**
+ * Main Database Class
+ * @author Teodor
+ *
+ */
 public class Database {
 	private String name;
 	private int noNodes;
 	private int nodeCapacity;
 	private PriorityQueue<StorageNode> nodes;
 	
+	/**
+	 * Creates a new database of given parameters
+	 * @param name Database name
+	 * @param noNodes Number of database nodes
+	 * @param nodeCapacity Storage capacity for each node
+	 */
 	public Database(String name, int noNodes, int nodeCapacity) {
 		this.name = name;
 		this.noNodes = noNodes;
@@ -19,6 +30,10 @@ public class Database {
 		}
 	}
 	
+	/**
+	 * Adds an entity to the database
+	 * @param entity Entity instance to be added to the database
+	 */
 	public void add(DbEntity entity) {
 		int i = 0;
 		ArrayList<StorageNode> backupNodes = new ArrayList<StorageNode>();
@@ -40,6 +55,10 @@ public class Database {
 		}
 	}
 	
+	/**
+	 * Returns a JSON
+	 * @return Object converted to JSON
+	 */
 	public String toString() {
 		PriorityQueue<StorageNode> backupNodes = new PriorityQueue<StorageNode>();
 		String returnString = "{name:" + name + ", noNodes:" + noNodes + ", nodeCapacity:" + nodeCapacity + ", nodes:[";
@@ -58,6 +77,10 @@ public class Database {
 		return returnString + "]}";
 	}
 	
+	/**
+	 * Prints the database to file in fixed template
+	 * @param output PrintWriter - destination file
+	 */
 	public void snapshot(PrintWriter output) {
 		StorageNode cNode = null;
 		DbEntity cEntity = null;
@@ -96,6 +119,12 @@ public class Database {
 		nodes = backupNodes;
 	}
 	
+	/**
+	 * Deletes element from database
+	 * @param template Entity template
+	 * @param primaryKey Entity Primary Key
+	 * @return Empty string if successful delete, "NO INSTANCE TO DELETE\n" if no matching elements
+	 */
 	public String delete(DbEntityTemplate template, String primaryKey) {
 		String returnString = "NO INSTANCE TO DELETE\n";
 		
@@ -115,6 +144,12 @@ public class Database {
 		return returnString;
 	}
 	
+	/**
+	 * Fetches Entity from database
+	 * @param template Entity template
+	 * @param primaryKey Entity Primary Key
+	 * @return String with Entity information or "NO INSTANCE FOUND\n" otherwise
+	 */
 	public String get(DbEntityTemplate template, String primaryKey) {
 		String returnString = "";
 		
@@ -151,6 +186,13 @@ public class Database {
 		return returnString + "\n";
 	}
 	
+	/**
+	 * Updates Entity in database; will update the Timestamp
+	 * @param template Entity template
+	 * @param primaryKey Entity Primary Key
+	 * @param attrNames ArrayList of attribute names to be updated
+	 * @param attrValues ArrayList of new attribute values (String)
+	 */
 	public void update(DbEntityTemplate template, String primaryKey, ArrayList<String> attrNames, ArrayList<String> attrValues) {
 		PriorityQueue<StorageNode> backupNodes = new PriorityQueue<StorageNode>();
 		StorageNode cNode = null;
@@ -162,7 +204,6 @@ public class Database {
 				attrVals = getObjectValues(template, attrNames, attrValues);
 				DbEntity cEntity = cNode.getEntity(template.getType(), primaryKey);
 				cNode.removeEntity(template.getType(), primaryKey);
-				//System.out.println(attrVals + " " + attrNames + " " + attrValues);
 				cEntity.updateAttributes(attrNames, attrVals);
 				cNode.addEntity(cEntity);
 			}
@@ -171,6 +212,13 @@ public class Database {
 		nodes = backupNodes;
 	}
 	
+	/**
+	 * Converts a String ArrayList of values to an Object ArrayList of values based on the corresponding types in the Entity template
+	 * @param template Entity Template used for Value conversion
+	 * @param attrNames ArrayList of desired attribute names
+	 * @param attrValues ArrayList of given attribute values (String)
+	 * @return ArrayList of given attribute values (Object)
+	 */
 	private ArrayList<Object> getObjectValues(DbEntityTemplate template, ArrayList<String> attrNames, ArrayList<String> attrValues) {
 		Iterator<String> nameIterator = attrNames.iterator();
 		Iterator<String> valueIterator = attrValues.iterator();

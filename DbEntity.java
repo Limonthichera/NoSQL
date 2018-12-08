@@ -121,18 +121,34 @@ public class DbEntity {
 		return timestamp;
 	}
 	
-	protected Iterator<Object> getAttributeIterator() {
+	/**
+	 * Get an iterator through all the attribute values of this Entity
+	 * @return Iterator through all the attribute values of this Entity
+	 */
+	public Iterator<Object> getAttributeIterator() {
 		return attributeValues.iterator();
 	}
 	
-	protected Iterator<String> getAttributeNameIterator() {
+	/**
+	 * Get an iterator through all the attribute names of this Entity
+	 * @return Iterator through all the attribute names of this Entity
+	 */
+	public Iterator<String> getAttributeNameIterator() {
 		return attributeNames.iterator();
 	}
 	
-	protected Iterator<String> getAttributeTypeIterator() {
+	/**
+	 * Get an iterator through all the attribute types of this Entity
+	 * @return Iterator through all the attribute types of this Entity
+	 */
+	public Iterator<String> getAttributeTypeIterator() {
 		return attributeTypes.iterator();
 	}
 	
+	/**
+	 * Updates timestamp to current system timestamp
+	 * @return New timestamp
+	 */
 	public Timestamp updateTimestamp() {
 		timestamp = new Timestamp(System.currentTimeMillis());
 		return timestamp;
@@ -183,6 +199,10 @@ public class DbEntity {
 		return returnString + "}}";
 	}
 	
+	/**
+	 * Gets Entity Replicating Factor
+	 * @return Entity Replicating Factor
+	 */
 	public int getRF() {
 		return replicatingFactor;
 	}

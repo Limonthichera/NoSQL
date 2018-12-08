@@ -9,6 +9,7 @@ import java.util.Iterator;
  */
 public class DbEntity {
 	private String entityType;
+	private int replicatingFactor;
 	private Timestamp timestamp;
 	private ArrayList<String> attributeTypes;
 	private ArrayList<String> attributeNames;
@@ -22,6 +23,7 @@ public class DbEntity {
 	 */
 	public DbEntity(DbEntityTemplate entityTemplate, ArrayList<Object> attributeValues) {
 		timestamp = new Timestamp(System.currentTimeMillis());
+		replicatingFactor = entityTemplate.getRF();
 		this.entityType = entityTemplate.getType();
 		this.attributeTypes = new ArrayList<String>();
 		this.attributeNames = new ArrayList<String>();
@@ -115,17 +117,16 @@ public class DbEntity {
 		return timestamp;
 	}
 	
-	/**
-	 * Fetches ArrayList of all attributes
-	 * @return ArrayList of all Entity Instance attributes<br/>Notice: Alterations won't affect stored data
-	 */
-	public ArrayList<Object> getAttributes() {
-		ArrayList<Object> attrVals = new ArrayList<Object>();
-		Iterator<Object> valueIterator = attributeValues.iterator();
-		while (valueIterator.hasNext()) {
-			attrVals.add(valueIterator.next());
-		}
-		return attrVals;
+	protected Iterator<Object> getAttributeIterator() {
+		return attributeValues.iterator();
+	}
+	
+	protected Iterator<String> getAttributeNameIterator() {
+		return attributeNames.iterator();
+	}
+	
+	protected Iterator<String> getAttributeTypeIterator() {
+		return attributeTypes.iterator();
 	}
 	
 	/**
@@ -160,7 +161,7 @@ public class DbEntity {
 	 */
 	@Override
 	public String toString() {
-		String returnString = "{type:" + entityType + ", timestamp:" + timestamp + ", attributes:{";
+		String returnString = "{type:" + entityType + ", timestamp:" + timestamp + ", RF:" + replicatingFactor + ", attributes:{";
 		
 		Iterator<Object> valueIterator = attributeValues.iterator();
 		Iterator<String> nameIterator = attributeNames.iterator();
@@ -170,5 +171,9 @@ public class DbEntity {
 				returnString += ", ";
 		}
 		return returnString + "}}";
+	}
+	
+	public int getRF() {
+		return replicatingFactor;
 	}
 }

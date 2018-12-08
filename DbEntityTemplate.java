@@ -8,6 +8,7 @@ import java.util.Iterator;
  */
 public class DbEntityTemplate {
 	private String type;
+	private int replicatingFactor;
 	private ArrayList<String> attributeTypes;
 	private ArrayList<String> attributeNames;
 	
@@ -17,8 +18,9 @@ public class DbEntityTemplate {
 	 * @param attributeTypes ArrayList of attribute types for the entity
 	 * @param attributeNames ArrayList of attribute names for the entity
 	 */
-	public DbEntityTemplate(String type, ArrayList<String> attributeTypes, ArrayList<String> attributeNames) {
+	public DbEntityTemplate(String type, int RF, ArrayList<String> attributeTypes, ArrayList<String> attributeNames) {
 		this.type = type;
+		replicatingFactor = RF;
 		
 		this.attributeTypes = new ArrayList<String>();
 		Iterator<String> typeIterator = attributeTypes.iterator();
@@ -61,5 +63,13 @@ public class DbEntityTemplate {
 	
 	public String getType() {
 		return type;
+	}
+	
+	public int getRF() {
+		return replicatingFactor;
+	}
+	
+	public String toString() {
+		return "{type:" + type + ", RF:" + replicatingFactor + ", attrNames:" + attributeNames + ", attrTypes:" + attributeTypes + "}";
 	}
 }

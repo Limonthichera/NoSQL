@@ -2,7 +2,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
 
-public class StorageNode {
+public class StorageNode implements Comparable<StorageNode>{
 	private int maxCapacity;
 	private Deque<DbEntity> mem;
 	
@@ -56,5 +56,17 @@ public class StorageNode {
 		}
 		return returnString + "]}";
 	}
+	
+	protected Iterator<DbEntity> getMemIterator() {
+		return mem.iterator();
+	}
+
+	@Override
+	public int compareTo(StorageNode obj) {
+		if (mem.size() > obj.mem.size()) return -1;
+		if (mem.size() < obj.mem.size()) return 1;
+		return 0;
+	}
+	
 	
 }

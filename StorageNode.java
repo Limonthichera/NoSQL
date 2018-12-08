@@ -1,13 +1,13 @@
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Stack;
 
 public class StorageNode {
 	private int maxCapacity;
-	private ArrayList<DbEntity> mem;
+	private Stack<DbEntity> mem;
 	
 	public StorageNode(int maxCapacity) {
 		this.maxCapacity = maxCapacity;
-		mem = new ArrayList<DbEntity>();
+		mem = new Stack<DbEntity>();
 	}
 	
 	public boolean addEntity(DbEntity entity) {

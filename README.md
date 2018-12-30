@@ -1,2 +1,2 @@
 # NoSQL
-NoSQL Database
+NoSQL Database - University project
